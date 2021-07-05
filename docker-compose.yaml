@@ -1,0 +1,17 @@
+services:
+  web:
+    image: cyclemap
+    environment:
+      QUART_ENV: development
+      MONGODB_URI: mongodb://mongo
+    command: python /usr/local/lib/python3.9/site-packages/cyclemap/app.py
+    volumes:
+      - ./cyclemap:/usr/local/lib/python3.9/site-packages/cyclemap
+    ports:
+      - "5000:5000"
+    links:
+      - mongo
+  mongo:
+    image: mongo:4.4.6
+    volumes:
+      - ./mongo:/data/db
