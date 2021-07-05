@@ -1,0 +1,2 @@
+recursive-include cyclemap/static *
+recursive-include cyclemap/templates *
