@@ -1,4 +1,5 @@
 import setuptools
+import versioneer
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -8,6 +9,8 @@ with open("requirements.txt", "r") as fh:
 
 setuptools.setup(
     name="cyclemap",
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     author="Floris Van den Abeele",
     description="Display cycle tours and social media content on a map",
     long_description=long_description,
