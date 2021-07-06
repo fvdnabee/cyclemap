@@ -19,7 +19,8 @@ posts_collection: AsyncIOMotorCollection = get_posts_collection()
 
 
 async def crawl_statuses(url: str, limit: int = 40) -> None:
-    """Crawl mastodon statuses for an account API link, url should be of https://mastodon.example/api/v1/accounts/:id/statuses"""
+    """Crawl mastodon statuses for an account API link, url should
+    be of https://mastodon.example/api/v1/accounts/:id/statuses"""
     params: dict = {}
     if limit is not None:
         params['limit'] = limit
@@ -27,7 +28,8 @@ async def crawl_statuses(url: str, limit: int = 40) -> None:
     async with aiohttp.ClientSession() as session:
         async with session.get(url, params=params) as resp:
             statuses: dict = await resp.json()
-            logger.info('Fetched %s, response status = %d, %d status items', resp.url, resp.status, len(statuses))
+            logger.info('Fetched %s, response status = %d, %d status items',
+                        resp.url, resp.status, len(statuses))
             process_task = asyncio.create_task(process_statuses(statuses))
 
             next_url: Optional[str]
@@ -56,19 +58,25 @@ async def process_statuses(statuses: dict) -> None:
     """Insert statuses as posts into mongodb."""
     status_keys = ['id', 'created_at', 'url', 'content', 'media_attachments']
     for status in statuses:
-        post = {k: status[k] for k in status_keys if status.get(k) is not None}  # only keep a number of fields
-        post['account'] = {'display_name': status['account']['display_name'], 'url': status['account']['url']}
+        # only keep a number of fields:
+        post = {k: status[k] for k in status_keys if status.get(k) is not None}
+
+        post['account'] = {
+            'display_name': status['account']['display_name'],
+            'url': status['account']['url']}
         add_geo_json(post)
         convert_iso8601_dt_string(post, 'created_at')
 
         document = await posts_collection.find_one({'url': post['url']})
         if not document:
             await posts_collection.insert_one(post)
-            logger.info('Inserted document into posts collection with id %s, url = %s', post['id'], post['url'])
+            logger.info('Inserted document into posts collection with id %s, url = %s',
+                        post['id'], post['url'])
 
 
 def add_geo_json(post) -> None:
-    """Parse post text and add GeoJSON object named LOCATION_FIELD, latitude/longitude based on osm url in status text."""
+    """Parse post text and add GeoJSON object named LOCATION_FIELD,
+    latitude/longitude based on osm url in status text."""
     if 'content' not in post:
         return
 
@@ -87,11 +95,13 @@ def add_geo_json(post) -> None:
                 # from https://docs.mongodb.com/manual/geospatial-queries/#geospatial-data
                 post[LOCATION_FIELD] = {'type': 'Point', 'coordinates': [float(lon), float(lat)]}
             except ValueError as ex:
-                logger.error("Failed to parse latitude/longitude from url %s: exception: %s", url, ex)
+                logger.error("Failed to parse latitude/longitude from url %s: exception: %s",
+                             url, ex)
 
 
 def convert_iso8601_dt_string(post: dict, key: str) -> None:
-    """Try to parse post[field] as an ISO-8601 datetime string and replace it with a python datetime object"""
+    """Try to parse post[field] as an ISO-8601 datetime string and replace
+    it with a python datetime object"""
     if key not in post:
         return
 
@@ -121,7 +131,8 @@ def run(api_url: str):
 def cli():
     """Script CLI interface."""
     parser = argparse.ArgumentParser(description="Import mastodon statuses into mongodb")
-    parser.add_argument("api_url", help="Mastodon statuses API url to import toots from: https://mastodon.example/api/v1/accounts/:id/statuses")
+    parser.add_argument("api_url", help="Mastodon statuses API url to import toots \
+            from: https://mastodon.example/api/v1/accounts/:id/statuses")
     args = parser.parse_args()
     run(args.api_url)
 

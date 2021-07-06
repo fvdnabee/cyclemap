@@ -19,8 +19,9 @@ def get_app():
 
 @app.before_serving
 async def setup_mongodb():
-    """Add mongodb client objects to quart app object.
-    This delays the mongodb client init until after the start of quart's event loop, ensuring mongodb and quart use the same event loop.
+    """Add mongodb client objects to quart app object.  This delays the mongodb
+    client init until after the start of quart's event loop, ensuring mongodb
+    and quart use the same event loop.
     See https://pgjones.gitlab.io/quart/how_to_guides/event_loop.html"""
     app.motor_client: AsyncIOMotorClient = get_client()
     app.posts_collection: AsyncIOMotorCollection = get_posts_collection()

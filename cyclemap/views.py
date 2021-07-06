@@ -17,12 +17,14 @@ async def index():
     start_value = datetime.datetime(2017, 7, 1, 0, 0, 0, 0).isoformat()
     end_value = datetime.datetime.utcfromtimestamp(time.time()).isoformat()
 
-    return await render_template('map.html', range_selector_start_value=start_value, range_selector_end_value=end_value)
+    return await render_template('map.html', range_selector_start_value=start_value,
+                                 range_selector_end_value=end_value)
 
 
 @blueprint.route('/get_map_entries/<path:subpath>')
 async def get_map_entries(subpath: str):
-    """Backend service that returns posts tagged inside the map viewport that lie within a range of dates."""
+    """Backend service that returns posts tagged inside the map viewport that lie
+    within a range of dates."""
     # Parse request URI
     if subpath[-1] == '/':
         subpath = subpath[:-1]  # remove trailing slash
@@ -33,7 +35,8 @@ async def get_map_entries(subpath: str):
     begin_datetime: datetime.datetime = dateutil.parser.isoparse(tokens[4])
     end_datetime: datetime.datetime = dateutil.parser.isoparse(tokens[5])
 
-    logger.info("%s -> returning JSON for input: %f %f %f %f %s %s", request.path, sw_lng, sw_lat, ne_lng, ne_lat, begin_datetime, end_datetime)
+    logger.info("%s -> returning JSON for input: %f %f %f %f %s %s", request.path,
+                sw_lng, sw_lat, ne_lng, ne_lat, begin_datetime, end_datetime)
 
     # Build the filter dict
     filt = {}
