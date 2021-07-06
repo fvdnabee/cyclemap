@@ -15,4 +15,4 @@ RUN pip install /tmp/cyclemap-*-py3-none-any.whl
 
 # Set command:
 EXPOSE 8000
-CMD ["hypercorn", "--bind", "0.0.0.0:8000", "cyclemap.app:app"]
+CMD ["hypercorn", "--bind", "0.0.0.0:8000", "cyclemap.app:get_app()"]
