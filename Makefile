@@ -30,6 +30,10 @@ wheel: # Package project into python wheel
 build: wheel ## Build the container
 	docker build --progress=plain -f Dockerfile -t $(APP_NAME) .
 
+build-from-ci: ## Build the container in CI, using the image repo as a cache. Note: does not build the wheel
+	docker pull ${DOCKER_REPO}:latest || true
+	docker build --cache-from ${DOCKER_REPO}:latest --progress=plain -f Dockerfile -t $(APP_NAME) .
+
 run: ## Run container
 	docker run -it -p 8000:8000 $(APP_NAME)
 

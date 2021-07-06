@@ -62,7 +62,7 @@ jobs:
 
     - name: Build and publish container
       run: |
-        make build
+        make build-from-ci
         make publish-latest
         make publish-version
         export ECR_REGISTRY="public.ecr.aws/o0s8a4l2"
