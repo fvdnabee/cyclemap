@@ -1,5 +1,8 @@
+.git
+.env
 build
 cyclemap.egg-info
 __pycache__
 dist
 mongo
+.coverage
