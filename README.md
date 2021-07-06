@@ -2,6 +2,9 @@
 ## Run development server
 `QUART_ENV=development python cyclemap/app.py`
 
+## Create python wheel
+`make wheel`
+
 ## docker-compose dev server:
 First, build the image:
 `make build`
