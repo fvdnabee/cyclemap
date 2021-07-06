@@ -76,3 +76,6 @@ repo-login: ## Auto login to AWS-ECR unsing aws-cli
 
 version: ## Output the current version
 	@echo $(VERSION)
+
+docker-tag: ## Output the docker tag
+	@echo $(VERSION_DOCKER)
