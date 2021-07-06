@@ -1,4 +1,4 @@
-# AWS ECR Public AMI policy
+# AWS ECR Public IAM policy
 Github AWS user has the following IAM policy attached:
 ```
 {
@@ -32,3 +32,22 @@ Github AWS user has the following IAM policy attached:
     ]
 }
 ```
+
+# AWS ECS update service IAM policy
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "ecs:UpdateService",
+            "Resource": "arn:aws:ecs:eu-west-1:184611879143:service/cyclemap-tf/cyclemap-web"
+        }
+    ]
+}
+```
+
+# TODO
+Move these policies into the terraform repo, together with the creation of the
+Github user and assigning the policies.

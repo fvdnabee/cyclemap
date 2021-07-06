@@ -69,3 +69,17 @@ jobs:
         export ECR_REPOSITORY=cyclemap
         export IMAGE_TAG=$(make docker-tag)
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+    - name: Force new deployment on ECS to cycle the ECS task to the freshly pushed image
+      env:
+        ECS_CLUSTER: cyclemap-tf
+        ECS_SERVICE: cyclemap-web
+      run: |
+        aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment
