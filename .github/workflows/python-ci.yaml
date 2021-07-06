@@ -1,0 +1,52 @@
+# This workflow runs linting
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python CI
+
+on:
+  push:
+    branches: [ $default-branch ]  # on push to main/master branch
+  pull_request:  # on pull requests to any branch
+
+jobs:
+  pylint:
+    runs-on: ubuntu-latest  # use github runner
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - uses: actions/cache@v2
+      with:
+        path: ${{ env.pythonLocation }}
+        key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements-dev.txt') }}
+    - name: Install dependencies
+      run: |
+        pip install --upgrade --upgrade-strategy eager -r requirements-dev.txt -e .
+    - name: Lint with pylint
+      run: |
+        pylint --rcfile .pylintrc cyclemap
+
+  build-publish:
+    runs-on: ubuntu-latest  # use github runner
+    if: github.ref == 'refs/heads/master'  # only run for pushes on master
+    needs: pylint  # linting should be succesfull
+    steps:
+    - uses: actions/checkout@v2
+    - name: Output version
+      run: make version
+    - name: Build wheel
+      run: make wheel
+    - name: Upload wheel
+      uses: actions/upload-artifact@v2
+      with:
+        path: dist/cyclemap-*.whl
+    - name: build container
+      run: make build
+    - name: Publish container
+      run: make publish
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID  }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION:  ${{ secrets.AWS_DEFAULT_REGION }}
