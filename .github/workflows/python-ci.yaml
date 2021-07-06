@@ -34,6 +34,8 @@ jobs:
     needs: pylint  # linting should be succesfull
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Fetch all history for all tags and branches, needed for make version
 
     - name: Build wheel and output version
       id: build-output-version
