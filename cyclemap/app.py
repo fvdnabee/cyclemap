@@ -2,6 +2,7 @@
 from quart import Quart
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 
+from cyclemap import __version__
 from cyclemap.views import blueprint
 from cyclemap.mongodb import get_client, get_posts_collection
 
@@ -10,7 +11,13 @@ app.register_blueprint(blueprint)
 
 
 @app.before_serving
-async def startup():
+async def print_version():
+    """Print cyclemap version to stdout."""
+    print(f"cyclemap version: {__version__}")
+
+
+@app.before_serving
+async def setup_mongodb():
     """Add mongodb client objects to quart app object.
     This delays the mongodb client init until after the start of quart's event loop, ensuring mongodb and quart use the same event loop.
     See https://pgjones.gitlab.io/quart/how_to_guides/event_loop.html"""
