@@ -35,19 +35,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Output version
-      id: output-version
+    - name: Build wheel and output version
+      id: build-output-version
       run: |
         make version
+        make wheel
         echo "::set-output name=ARTIFACT_NAME::$(find dist/ -name '*.whl' -exec basename {} \;)"
-
-    - name: Build wheel
-      run: make wheel
 
     - name: Upload wheel
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ steps.output-version.outputs.ARTIFACT_NAME }}
+        name: ${{ steps.build-output-version.outputs.ARTIFACT_NAME }}
         path: dist/cyclemap-*.whl
 
     - name: Login to AWS Public ECR
