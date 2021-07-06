@@ -5,8 +5,8 @@ name: Python CI
 
 on:
   push:
-    branches: [ $default-branch ]  # on push to main/master branch
-  pull_request:  # on pull requests to any branch
+    branches: [ master ]  # on push to master branch
+  pull_request:  # on pull requests for any branch
 
 jobs:
   pylint:
