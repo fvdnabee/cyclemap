@@ -291,7 +291,7 @@ if (btnBenede != null) {
 		if (typeof rangeSelector != "undefined")  rangeSelector.setValue([beginDate, endDate]);
 		setDates(beginDate, endDate);
 
-		var bounds = [ [ 0.930541, 50.458336 ], [10.664480, 53.601601] ]
+		var bounds = [ [ 0.930541, 50.058336 ], [10.664480, 53.601601] ]
 		map.fitBounds(bounds);
 		setBounds(bounds);
 
