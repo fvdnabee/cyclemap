@@ -81,7 +81,7 @@ def add_geo_json(post) -> None:
         return
 
     # Find osm.org url
-    if re_match := re.search(r"(?P<url>https?://osm.org/[^\s]+)", post['content']):
+    if re_match := re.search(r"(?P<url>https?://(www.)?osm.org/[^\s]+)", post['content']):
         url = re_match.group("url")
         lat, lon = None, None
         if re_match := re.search(r"lat=(?P<lat>[-+]?\d+\.?\d*)", url):
