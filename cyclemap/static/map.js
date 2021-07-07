@@ -42,11 +42,6 @@ map.on('zoomend', function() {
 	}
 });
 
-map.on('moveend', function() {
-	setBounds(map.getBounds().toArray());
-	updateMap();
-});
-
 function addTrackLayers (){
 	for (var i = 0; i < layer_ids.length; i++) {
 		map.addLayer({
