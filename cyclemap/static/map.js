@@ -301,6 +301,25 @@ function tourButtonClicked(beginDate, endDate, bounds, layerIdsToHide, layerIdsT
 		updateMap();
 }
 
+
+var btnAllTours = document.getElementById("btn-alltours");
+if (btnAllTours != null) {
+	btnAllTours.onclick = function(){
+		closeNav();
+
+		initAjaxFilters();
+		if (typeof rangeSelector != "undefined")  rangeSelector.setValue(dates); // dates is set by calling initAjaxFilters()
+
+		map.setCenter([12.071354, 46.606002]);
+		map.setZoom(4.5);
+
+		// show all layers:
+		layer_ids.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
+
+		updateMap();
+	};
+}
+
 function openNav() {
   document.getElementById("sidebar").style.width = "175px";
 }
