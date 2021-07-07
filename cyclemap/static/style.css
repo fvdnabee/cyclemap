@@ -96,21 +96,60 @@ html, body {
     padding: 10px 10px;
 }
 
-.homepage {
-    position:fixed;
-    bottom: 70px;
-    right: 10px;
-    z-index: 9000000;
+.openbtn {
+    position: fixed;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #fff;
+    color: black;
+    margin: 22px 22px;
+    padding: 10px 15px;
+    border: none;
+}
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(255,255,255,1.0);
+    overflow-x: hidden;
+    transition: 0.25s;
+    padding-top: 50px;
+    text-align: center;
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.sidebar button {
+    margin: 5px 15px;
+    text-align: center;
+    opacity: 1;
     background: white;
     font: 14px Arial, Helvetica, sans-serif;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,1.0);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    opacity: 1;
     border-radius: 5px;
+}
+
+.sidebar button, .sidebar img, .sidebar svg {
     padding: 10px 10px;
 }
 
-.map_entry_popup p {
-	max-width: 400px;
-	word-wrap: break-word
+.sidebar img {
+    width: 70%;
 }
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 50px;
+    margin-bottom: 20px;
+}
+
