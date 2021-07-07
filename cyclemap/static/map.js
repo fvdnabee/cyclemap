@@ -236,6 +236,8 @@ if (btnSetBounds != null) {
 var btnSilkroad = document.getElementById("btn-silkroad");
 if (btnSilkroad != null) {
 	btnSilkroad.onclick = function(){
+		closeNav();
+
 		var beginDate = new Date(2018, 01, 01);
 		var endDate = new Date(2018, 11, 30);
 		if (typeof rangeSelector != "undefined") rangeSelector.setValue([beginDate, endDate]);
@@ -258,6 +260,8 @@ if (btnSilkroad != null) {
 var btnSantiago = document.getElementById("btn-santiago");
 if (btnSantiago != null) {
 	btnSantiago.onclick = function(){
+		closeNav();
+
 		var beginDate = new Date(2017, 9, 9);
 		var endDate = new Date(2017, 11, 31);
 		if (typeof rangeSelector != "undefined")  rangeSelector.setValue([beginDate, endDate]);
@@ -280,6 +284,8 @@ if (btnSantiago != null) {
 var btnBenede = document.getElementById("btn-benede");
 if (btnBenede != null) {
 	btnBenede.onclick = function(){
+		closeNav();
+
 		var beginDate = new Date(2017, 6, 1);
 		var endDate = new Date(2017, 6, 31);
 		if (typeof rangeSelector != "undefined")  rangeSelector.setValue([beginDate, endDate]);
@@ -301,10 +307,8 @@ if (btnBenede != null) {
 
 function openNav() {
   document.getElementById("sidebar").style.width = "175px";
-  document.getElementById("date-filter").style.marginLeft = "150px";
 }
 
 function closeNav() {
   document.getElementById("sidebar").style.width = "0";
-  document.getElementById("date-filter").style.marginLeft = "0";
 }
