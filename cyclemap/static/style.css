@@ -61,6 +61,9 @@ html, body {
     transition: 0.25s;
     padding-top: 50px;
     text-align: center;
+    display: flex;                   /* defines flexbox */
+    flex-direction: column;          /* top to bottom */
+    justify-content: space-between;  /* first item at start, last at end */
 }
 
 .sidebar .closebtn {
@@ -91,8 +94,5 @@ html, body {
 }
 
 .sidebar-footer {
-    position: absolute;
-    bottom: 50px;
-    margin-bottom: 20px;
+    height: 200px;
 }
-
