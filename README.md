@@ -26,3 +26,18 @@ docker-compose run  web /bin/bash
 export MONGODB_URI="mongodb+srv://dbUser:<password>@cluster0.7vfqm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 import_masto https://mastodon.example/api/v1/accounts/:id/statuses
 ```
+
+## Empty posts collection:
+```
+ mongo "mongodb+srv://dbUser:<password>@cluster0.7vfqm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+MongoDB shell version v4.4.6
+connecting to: mongodb://xxx
+Implicit session: session { "id" : UUID("f4994525-bfda-45a6-9b65-58dfd866962c") }
+MongoDB server version: 4.4.6
+MongoDB Enterprise atlas-karyn4-shard-0:PRIMARY> use cyclemap_db;
+switched to db cyclemap_db
+MongoDB Enterprise atlas-karyn4-shard-0:PRIMARY> show collections;
+posts_collection
+MongoDB Enterprise atlas-karyn4-shard-0:PRIMARY> db.posts_collection.remove({})
+WriteResult({ "nRemoved" : 125 })
+```
