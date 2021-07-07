@@ -301,8 +301,7 @@ if (btnBenede != null) {
 
 function openNav() {
   document.getElementById("sidebar").style.width = "175px";
-  document.getElementById("date-filter").style.marginLeft = "175px";
-
+  document.getElementById("date-filter").style.marginLeft = "150px";
 }
 
 function closeNav() {
