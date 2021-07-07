@@ -310,7 +310,7 @@ if (btnAllTours != null) {
 		initAjaxFilters();
 		if (typeof rangeSelector != "undefined")  rangeSelector.setValue(dates); // dates is set by calling initAjaxFilters()
 
-		map.setCenter([12.071354, 46.606002]);
+		map.setCenter([12.071354, 43.606002]);
 		map.setZoom(4.5);
 
 		// show all layers:
