@@ -248,7 +248,7 @@ if (btnSilkroad != null) {
 		setBounds(bounds);
 
 		// show silkroad track layers, hide other layers:
-		var layersToHide = [layer_ids[0], layer_ids[6]];
+		var layersToHide = [layer_ids[0], layer_ids[6], layer_ids[7]];
 		var layersToShow = [layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5]];
 		layersToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
 		layersToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
@@ -272,7 +272,7 @@ if (btnSantiago != null) {
 		setBounds(bounds);
 
 		// show santiago track layer, hide other layers:
-		var layersToHide = [layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6]];
+		var layersToHide = [layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6], layer_ids[7]];
 		var layersToShow = [layer_ids[0]];
 		layersToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
 		layersToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
@@ -296,8 +296,32 @@ if (btnBenede != null) {
 		setBounds(bounds);
 
 		// show benede track layer, hide other layers:
-		var layersToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5]];
+		var layersToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[7]];
 		var layersToShow = [layer_ids[6]];
+		layersToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
+		layersToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
+
+		updateMap();
+	};
+}
+
+var btnLimburg = document.getElementById("btn-limburg");
+if (btnLimburg != null) {
+	btnLimburg.onclick = function(){
+		closeNav();
+
+		var beginDate = new Date(2021, 2, 30);
+		var endDate = new Date(2021, 4, 31);
+		if (typeof rangeSelector != "undefined")  rangeSelector.setValue([beginDate, endDate]);
+		setDates(beginDate, endDate);
+
+		var bounds = [ [3.60431091757914, 50.625855941053255], [6.741750996328203, 51.42902384992439] ]
+		map.fitBounds(bounds);
+		setBounds(bounds);
+
+		// show benede track layer, hide other layers:
+		var layersToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6]];
+		var layersToShow = [layer_ids[7]];
 		layersToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
 		layersToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
 
