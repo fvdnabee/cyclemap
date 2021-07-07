@@ -24,13 +24,16 @@ map.on('load', function () {
 	tile_ids = ["fvdnabee.5dbhhek7", "fvdnabee.cwn75xfz", "fvdnabee.8uncf7n4", "fvdnabee.1o18xqpn", "fvdnabee.3k6un6tc", "fvdnabee.arcp8dgf", "fvdnabee.70itxk00", "fvdnabee.1icj8poo"]
 	addTrackLayers();
 
-	setDates(new Date(rssv), new Date(rsev))
-	// TODO: remove
-	// setDates(new Date(rssv[0], rssv[1], rssv[2]), new Date(rsev[0], rsev[1], rsev[2]));
-	setBounds(map.getBounds().toArray());
-
+	initAjaxFilters()
 	updateMap();
 });
+
+function initAjaxFilters() {
+	setDates(new Date(rssv), new Date(rsev))
+	//var bounds = map.getBounds().toArray();
+	var bounds = [ [ -180, -90 ], [ 180, 90 ] ]
+	setBounds(bounds);
+}
 
 map.on('zoomend', function() {
 	if (map.getZoom() < 6.5 && max_width_height != 50) {
