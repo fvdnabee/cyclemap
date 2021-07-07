@@ -300,9 +300,12 @@ if (btnBenede != null) {
 }
 
 function openNav() {
-  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("sidebar").style.width = "175px";
+  document.getElementById("date-filter").style.marginLeft = "175px";
+
 }
 
 function closeNav() {
-  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("sidebar").style.width = "0";
+  document.getElementById("date-filter").style.marginLeft = "0";
 }
