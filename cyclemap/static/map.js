@@ -236,97 +236,71 @@ if (btnSetBounds != null) {
 var btnSilkroad = document.getElementById("btn-silkroad");
 if (btnSilkroad != null) {
 	btnSilkroad.onclick = function(){
-		closeNav();
-
 		var beginDate = new Date(2018, 01, 01);
 		var endDate = new Date(2018, 11, 30);
-		if (typeof rangeSelector != "undefined") rangeSelector.setValue([beginDate, endDate]);
-		setDates(beginDate, endDate);
-
 		var bounds = [ [-4.507774877735272, 2.6602810808397237], [146.11767796084553, 61.04584048146046] ];
-		map.fitBounds(bounds);
-		setBounds(bounds);
-
 		// show silkroad track layers, hide other layers:
-		var layersToHide = [layer_ids[0], layer_ids[6], layer_ids[7]];
-		var layersToShow = [layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5]];
-		layersToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
-		layersToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
+		var layerIdsToHide = [layer_ids[0], layer_ids[6], layer_ids[7]];
+		var layerIdsToShow = [layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5]];
 
-		updateMap();
+		tourButtonClicked(beginDate, endDate, bounds, layerIdsToHide, layerIdsToShow);
 	};
 }
 
 var btnSantiago = document.getElementById("btn-santiago");
 if (btnSantiago != null) {
 	btnSantiago.onclick = function(){
-		closeNav();
-
 		var beginDate = new Date(2017, 9, 9);
 		var endDate = new Date(2017, 11, 31);
-		if (typeof rangeSelector != "undefined")  rangeSelector.setValue([beginDate, endDate]);
-		setDates(beginDate, endDate);
-
 		var bounds = [ [ -39.27630475468817, 26.781210313359125], [37.25033209346199, 54.85322398321597] ]
-		map.fitBounds(bounds);
-		setBounds(bounds);
-
 		// show santiago track layer, hide other layers:
-		var layersToHide = [layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6], layer_ids[7]];
-		var layersToShow = [layer_ids[0]];
-		layersToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
-		layersToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
+		var layerIdsToHide = [layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6], layer_ids[7]];
+		var layerIdsToShow = [layer_ids[0]];
 
-		updateMap();
+		tourButtonClicked(beginDate, endDate, bounds, layerIdsToHide, layerIdsToShow);
 	};
 }
 
 var btnBenede = document.getElementById("btn-benede");
 if (btnBenede != null) {
 	btnBenede.onclick = function(){
-		closeNav();
-
 		var beginDate = new Date(2017, 6, 1);
 		var endDate = new Date(2017, 6, 31);
-		if (typeof rangeSelector != "undefined")  rangeSelector.setValue([beginDate, endDate]);
-		setDates(beginDate, endDate);
-
 		var bounds = [ [ 0.930541, 50.058336 ], [10.664480, 53.601601] ]
-		map.fitBounds(bounds);
-		setBounds(bounds);
+		var layerIdsToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[7]];
+		var layerIdsToShow = [layer_ids[6]];
 
-		// show benede track layer, hide other layers:
-		var layersToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[7]];
-		var layersToShow = [layer_ids[6]];
-		layersToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
-		layersToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
-
-		updateMap();
+		tourButtonClicked(beginDate, endDate, bounds, layerIdsToHide, layerIdsToShow);
 	};
 }
 
 var btnLimburg = document.getElementById("btn-limburg");
 if (btnLimburg != null) {
 	btnLimburg.onclick = function(){
-		closeNav();
-
 		var beginDate = new Date(2021, 2, 30);
 		var endDate = new Date(2021, 4, 31);
+		var bounds = [ [3.60431091757914, 50.625855941053255], [6.741750996328203, 51.42902384992439] ]
+		// show limburg track layer, hide other layers:
+		var layerIdsToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6]];
+		var layerIdsToShow = [layer_ids[7]];
+
+		tourButtonClicked(beginDate, endDate, bounds, layerIdsToHide, layerIdsToShow);
+	};
+}
+
+function tourButtonClicked(beginDate, endDate, bounds, layerIdsToHide, layerIdsToShow) {
+		closeNav();
+
 		if (typeof rangeSelector != "undefined")  rangeSelector.setValue([beginDate, endDate]);
 		setDates(beginDate, endDate);
 
-		var bounds = [ [3.60431091757914, 50.625855941053255], [6.741750996328203, 51.42902384992439] ]
 		map.fitBounds(bounds);
 		setBounds(bounds);
 
-		// show benede track layer, hide other layers:
-		var layersToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6]];
-		var layersToShow = [layer_ids[7]];
-		layersToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
-		layersToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
+		layerIdsToHide.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'none'); });
+		layerIdsToShow.forEach(function(id) { map.setLayoutProperty(id, 'visibility', 'visible'); });
 
 		updateMap();
-	};
 }
 
 function openNav() {
