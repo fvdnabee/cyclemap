@@ -23,8 +23,10 @@ help: ## This help.
 .DEFAULT_GOAL := help
 
 
-wheel: # Package project into python wheel
+clean: # Remove python packaging artifacts
 	rm -rf build dist cyclemap.egg-info
+
+wheel: clean # Package project into python wheel
 	python setup.py bdist_wheel
 
 build: wheel ## Build the container
