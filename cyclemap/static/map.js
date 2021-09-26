@@ -290,7 +290,7 @@ var btnSwiss = document.getElementById("btn-swiss");
 if (btnSwiss != null) {
 	btnSwiss.onclick = function(){
 		var beginDate = new Date(2021, 09, 01);
-		var endDate = new Date(2021, 09, 30);
+		var endDate = new Date(2021, 09, 19);
 
 		var bounds = [ [5.798858253677991, 46.1077219159995], [10.3663090452535, 47.9275406797851] ]
 		// show Swiss track layer, hide other layers:
