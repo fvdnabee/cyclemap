@@ -289,11 +289,9 @@ if (btnLimburg != null) {
 var btnSwiss = document.getElementById("btn-swiss");
 if (btnSwiss != null) {
 	btnSwiss.onclick = function(){
-		var beginDate = new Date(2021, 09, 01);
-		var endDate = new Date(2021, 09, 19);
-
+		var beginDate = new Date(2021, 8, 1); // jan is month 0, dec is month 11
+		var endDate = new Date(2021, 8, 19); // jan is month 0, dec is month 11
 		var bounds = [ [5.798858253677991, 46.1077219159995], [10.3663090452535, 47.9275406797851] ]
-		// show Swiss track layer, hide other layers:
 		var layerIdsToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6], layer_ids[7]];
 		var layerIdsToShow = [layer_ids[8]];
 
