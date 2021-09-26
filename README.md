@@ -23,7 +23,7 @@ Run `import_masto` script in a new container, where `MONGODB_URI` is set on
 CLI (e.g. MongoDb Atlas):
 ```
 docker-compose run  web /bin/bash
-export MONGODB_URI="mongodb+srv://dbUser:<password>@cluster0.7vfqm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+export MONGODB_URI="mongodb+srv://dbUser:<password>@cluster0.7vfqm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 import_masto https://mastodon.example/api/v1/accounts/:id/statuses
 ```
 
