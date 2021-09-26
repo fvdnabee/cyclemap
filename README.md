@@ -41,3 +41,7 @@ posts_collection
 MongoDB Enterprise atlas-karyn4-shard-0:PRIMARY> db.posts_collection.remove({})
 WriteResult({ "nRemoved" : 125 })
 ```
+
+## Infrastructure
+Check out the accompanying [tf-cyclemap
+project](https://github.com/fvdnabee/cyclemap-tf).
