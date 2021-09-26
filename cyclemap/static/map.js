@@ -20,8 +20,9 @@ map.on('load', function () {
 
 	// Show cycling tracks on map
 	layer_colors = ["#0000ff", "#ff0000", "#ff0000", "#ff0000", "#ff0000", "#ff0000", "#00ffff", "#ffff00"]
-	layer_ids = ["santiago-track", "silkroad-0-track", "silkroad-1-track", "silkroad-2-track", "silkroad-3-track", "silkroad-4-track", "benede-track", "limburg-track"]
-	tile_ids = ["fvdnabee.5dbhhek7", "fvdnabee.cwn75xfz", "fvdnabee.8uncf7n4", "fvdnabee.1o18xqpn", "fvdnabee.3k6un6tc", "fvdnabee.arcp8dgf", "fvdnabee.70itxk00", "fvdnabee.1icj8poo"]
+	layer_ids = ["santiago-track", "silkroad-0-track", "silkroad-1-track", "silkroad-2-track", "silkroad-3-track", "silkroad-4-track", "benede-track", "limburg-track", "swiss-track"]
+	// TODO: create mapbox layer with swiss tracks
+	tile_ids = ["fvdnabee.5dbhhek7", "fvdnabee.cwn75xfz", "fvdnabee.8uncf7n4", "fvdnabee.1o18xqpn", "fvdnabee.3k6un6tc", "fvdnabee.arcp8dgf", "fvdnabee.70itxk00", "fvdnabee.1icj8poo", "fvdnabee.1icj8poo"]
 	addTrackLayers();
 
 	initAjaxFilters()
@@ -281,6 +282,21 @@ if (btnLimburg != null) {
 		// show limburg track layer, hide other layers:
 		var layerIdsToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6]];
 		var layerIdsToShow = [layer_ids[7]];
+
+		tourButtonClicked(beginDate, endDate, bounds, layerIdsToHide, layerIdsToShow);
+	};
+}
+
+var btnSwiss = document.getElementById("btn-swiss");
+if (btnSwiss != null) {
+	btnSwiss.onclick = function(){
+		var beginDate = new Date(2021, 09, 01);
+		var endDate = new Date(2021, 09, 30);
+
+		var bounds = [ [5.798858253677991, 46.1077219159995] [10.3663090452535, 47.9275406797851] ]
+		// show Swiss track layer, hide other layers:
+		var layerIdsToHide = [layer_ids[0], layer_ids[1], layer_ids[2], layer_ids[3], layer_ids[4], layer_ids[5], layer_ids[6], layer_ids[7]];
+		var layerIdsToShow = [layer_ids[8]];
 
 		tourButtonClicked(beginDate, endDate, bounds, layerIdsToHide, layerIdsToShow);
 	};
