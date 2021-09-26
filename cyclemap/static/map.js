@@ -19,7 +19,7 @@ map.on('load', function () {
 	ready = true;
 
 	// Show cycling tracks on map
-	layer_colors = ["#0000ff", "#ff0000", "#ff0000", "#ff0000", "#ff0000", "#ff0000", "#00ffff", "#ffff00"]
+	layer_colors = ["#0000ff", "#ff0000", "#ff0000", "#ff0000", "#ff0000", "#ff0000", "#00ffff", "#ffff00", "#800080"]
 	layer_ids = ["santiago-track", "silkroad-0-track", "silkroad-1-track", "silkroad-2-track", "silkroad-3-track", "silkroad-4-track", "benede-track", "limburg-track", "swiss-track"]
 	tile_ids = ["fvdnabee.5dbhhek7", "fvdnabee.cwn75xfz", "fvdnabee.8uncf7n4", "fvdnabee.1o18xqpn", "fvdnabee.3k6un6tc", "fvdnabee.arcp8dgf", "fvdnabee.70itxk00", "fvdnabee.1icj8poo", "fvdnabee.2bu2zz52"]
 	addTrackLayers();
