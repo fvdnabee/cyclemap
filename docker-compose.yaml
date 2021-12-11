@@ -12,6 +12,6 @@ services:
     links:
       - mongo
   mongo:
-    image: mongo:4.4.6
+    image: mongo:5.0
     volumes:
       - ./mongo:/data/db
