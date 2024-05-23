@@ -58,6 +58,10 @@ async def process_statuses(statuses: dict) -> None:
     """Insert statuses as posts into mongodb."""
     status_keys = ['id', 'created_at', 'url', 'content', 'media_attachments']
     for status in statuses:
+        document = await posts_collection.find_one({'url': status['url']})
+        if document:  # Skip post that exists already.
+            continue
+
         # only keep a number of fields:
         post = {k: status[k] for k in status_keys if status.get(k) is not None}
 
@@ -67,11 +71,9 @@ async def process_statuses(statuses: dict) -> None:
         add_geo_json(post)
         convert_iso8601_dt_string(post, 'created_at')
 
-        document = await posts_collection.find_one({'url': post['url']})
-        if not document:
-            await posts_collection.insert_one(post)
-            logger.info('Inserted document into posts collection with id %s, url = %s',
-                        post['id'], post['url'])
+        await posts_collection.insert_one(post)
+        logger.info('Inserted document into posts collection with id %s, url = %s',
+                    post['id'], post['url'])
 
 
 def add_geo_json(post) -> None:
