@@ -13,12 +13,14 @@ Bring up the services:
 `docker-compose up`
 
 ## Import mastodon statuses
+### Existing container
 Run `import_masto` script in a running container, where `MONGODB_URI` is set
 from docker-compose.yaml:
 ```
 docker exec -it cyclemap_web_1 import_masto https://mastodon.example/api/v1/accounts/:id/statuses
 ```
 
+### New container
 Run `import_masto` script in a new container, where `MONGODB_URI` is set on
 CLI (e.g. MongoDb Atlas):
 ```
