@@ -1,8 +1,10 @@
 .git
 .env
+.venv
 build
 cyclemap.egg-info
 __pycache__
 dist
 mongo
 .coverage
+posts.json
