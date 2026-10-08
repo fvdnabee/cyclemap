@@ -2,6 +2,8 @@
 """Script that imports mastodon statuses into mongo db."""
 import argparse
 import asyncio
+import datetime
+import json
 import re
 from typing import Optional
 
@@ -15,16 +17,19 @@ from cyclemap.mongodb import get_posts_collection
 
 LOCATION_FIELD = "location"
 logger = Log.get_logger(__name__)
-posts_collection: AsyncIOMotorCollection = get_posts_collection()
+posts_collection: AsyncIOMotorCollection = None
+STORE_JSON = None
+STORE_MONGO = None
 
 
-async def crawl_statuses(url: str, limit: int = 40) -> None:
+async def crawl_statuses(url: str, limit: int = 40) -> list[dict]:
     """Crawl mastodon statuses for an account API link, url should
     be of https://mastodon.example/api/v1/accounts/:id/statuses"""
     params: dict = {}
     if limit is not None:
         params['limit'] = limit
 
+    all_posts = []
     async with aiohttp.ClientSession() as session:
         async with session.get(url, params=params) as resp:
             statuses: dict = await resp.json()
@@ -34,9 +39,13 @@ async def crawl_statuses(url: str, limit: int = 40) -> None:
 
             next_url: Optional[str]
             if next_url := get_link_url(resp, "next"):
-                await asyncio.create_task(crawl_statuses(next_url, None))
+                next_posts = await asyncio.create_task(crawl_statuses(next_url, limit))
+                all_posts.extend(next_posts)
 
-            await process_task
+            posts = await process_task
+            all_posts.extend(posts)
+
+    return all_posts
 
 
 def get_link_url(resp: aiohttp.ClientResponse, rel_filter="next") -> Optional[str]:
@@ -54,26 +63,43 @@ def get_link_url(resp: aiohttp.ClientResponse, rel_filter="next") -> Optional[st
     return None
 
 
-async def process_statuses(statuses: dict) -> None:
+async def process_statuses(statuses: dict) -> list[dict]:
     """Insert statuses as posts into mongodb."""
     status_keys = ['id', 'created_at', 'url', 'content', 'media_attachments']
+    posts = []
     for status in statuses:
-        document = await posts_collection.find_one({'url': status['url']})
-        if document:  # Skip post that exists already.
-            continue
-
         # only keep a number of fields:
         post = {k: status[k] for k in status_keys if status.get(k) is not None}
 
-        post['account'] = {
-            'display_name': status['account']['display_name'],
-            'url': status['account']['url']}
+        # post['account'] = {
+        #     'display_name': status['account']['display_name'],
+        #     'url': status['account']['url']}
+        post['media_attachments'] = [
+            {
+                'preview_url': attachment['preview_url'],
+                'meta': {'small': attachment['meta']['small']},
+            }
+            for attachment in post.get('media_attachments', [])
+        ]
+
         add_geo_json(post)
         convert_iso8601_dt_string(post, 'created_at')
+        posts.append(post)
 
-        await posts_collection.insert_one(post)
-        logger.info('Inserted document into posts collection with id %s, url = %s',
-                    post['id'], post['url'])
+        if STORE_MONGO:
+            await store_mongo(post)
+
+    return posts
+
+
+async def store_mongo(post: dict):
+    document = await posts_collection.find_one({'url': post['url']})
+    if document:  # Skip post that exists already.
+        return
+
+    await posts_collection.insert_one(post)
+    logger.info('Inserted document into posts collection with id %s, url = %s',
+                post['id'], post['url'])
 
 
 def add_geo_json(post) -> None:
@@ -95,7 +121,8 @@ def add_geo_json(post) -> None:
         if lat and lon:
             try:
                 # from https://docs.mongodb.com/manual/geospatial-queries/#geospatial-data
-                post[LOCATION_FIELD] = {'type': 'Point', 'coordinates': [float(lon), float(lat)]}
+                post[LOCATION_FIELD] = {'type': 'Point',
+                                        'coordinates': [float(lon), float(lat)]}
             except ValueError as ex:
                 logger.error("Failed to parse latitude/longitude from url %s: exception: %s",
                              url, ex)
@@ -110,7 +137,8 @@ def convert_iso8601_dt_string(post: dict, key: str) -> None:
     try:
         dt_obj = dateutil.parser.isoparse(post[key])
     except ValueError as ex:
-        logger.error("Failed to parse %s as a valid ISO-8601 datetime string: %s", post[key], ex)
+        logger.error(
+            "Failed to parse %s as a valid ISO-8601 datetime string: %s", post[key], ex)
     else:
         post[key] = dt_obj
 
@@ -123,19 +151,40 @@ async def create_mongo_indexess():
     logger.info("Created ascending index on `created_at` field")
 
 
+def serializer(obj):
+    if isinstance(obj, datetime.datetime):
+        return obj.isoformat()
+    raise TypeError(
+        f"Object of type {type(obj).__name__} is not JSON serializable")
+
+
 def run(api_url: str):
     """Run import_masto script."""
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(crawl_statuses(api_url))
-    loop.run_until_complete(create_mongo_indexess())
+    posts = loop.run_until_complete(crawl_statuses(api_url))
+    if STORE_JSON:
+        with open('posts.json', 'w') as f:
+            json.dump(posts, f, default=serializer)
+    if STORE_MONGO:
+        loop.run_until_complete(create_mongo_indexess())
 
 
 def cli():
     """Script CLI interface."""
-    parser = argparse.ArgumentParser(description="Import mastodon statuses into mongodb")
+    global STORE_JSON, STORE_MONGO, posts_collection
+    parser = argparse.ArgumentParser(
+        description="Import mastodon statuses into mongodb")
+    parser.add_argument(
+        "--json", help="Store output in JSON file", action='store_true')
+    parser.add_argument(
+        "--mongo", help="Store output in MongoDB collection", action='store_true')
     parser.add_argument("api_url", help="Mastodon statuses API url to import toots \
             from: https://mastodon.example/api/v1/accounts/:id/statuses")
     args = parser.parse_args()
+    STORE_JSON, STORE_MONGO = args.json, args.mongo
+    if STORE_MONGO:
+        posts_collection = get_posts_collection()
+
     run(args.api_url)
 
 
